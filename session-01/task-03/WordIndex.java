@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
@@ -13,6 +12,7 @@ import java.util.stream.Collectors;
 
 public class WordIndex {
     private static final int LINES_PER_PAGE = 45;
+    private static final int STOP_FREQUENCY_LIMIT = 100;
 
     public static void main(String[] args) throws FileNotFoundException {
         if (args.length != 1) {
@@ -24,6 +24,7 @@ public class WordIndex {
         Scanner scanner = new Scanner(inputFile);
 
         processScanner(scanner).entrySet().stream()
+                .filter(entry -> entry.getValue().size() <= STOP_FREQUENCY_LIMIT)
                 .sorted(Comparator.comparing(Map.Entry::getKey))
                 .forEach(WordIndex::printEntry);
     }
